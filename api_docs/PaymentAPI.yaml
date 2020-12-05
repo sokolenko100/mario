@@ -1,0 +1,287 @@
+components:
+  schemas:
+    CardRegistryDeleteRequest:
+      properties:
+        customerId:
+          type: string
+          description: Customer identification
+    CardRegistryInformationPayloadResponse:
+      properties:
+        payload:
+          $ref: "#/components/schemas/CardRegistryInformationResponse"
+    CardRegistryInformationResponse:
+      properties:
+        status:
+          type: string
+          description: Registry status - 1 registred - 0 no registred
+        customerId:
+          type: string
+          description: Customer identification
+        creditCardType:
+          type: string
+          description: Credit card brand
+        last4CardDigits:
+          type: string
+          description: Last 4 digits
+    CardRegistryRequest:
+      properties:
+        customerId:
+          type: string
+          description: Customer identification
+        urlReturn:
+          type: string
+          description: Callback Url to notify the result
+    CardRegistryResponse:
+      properties:
+        url:
+          type: string
+          description: The service answer with an Url to redirect the web browser
+        token:
+          type: string
+          description: This token identify the transaction
+    CardRegistryResponsePayload:
+      properties:
+        payload:
+          $ref: "#/components/schemas/CardRegistryResponse"
+    Customer:
+      properties:
+        name:
+          type: string
+          example: Pedro Raul Perez
+        email:
+          type: string
+          example: customer@gmail.com
+        externalId:
+          type: string
+          example: 14233531-8
+    CustomerPayloadResponse:
+      properties:
+        payload:
+          $ref: "#/components/schemas/CustomerResponse"
+    CustomerResponse:
+      properties:
+        customerId:
+          type: string
+          example: cus_onoolldvec
+        created:
+          type: string
+          example: "2017-07-21 12:33:15"
+        email:
+          type: string
+          example: customer@gmail.com
+        name:
+          type: string
+          example: Pedro Raul Perez
+        creditCardType:
+          type: string
+          example: Visa
+        last4CardDigits:
+          type: string
+          example: 4425
+        externalId:
+          type: string
+          example: 14233531-8
+        status:
+          type: string
+          example: 0 Inactivo - 1 Activo - 3 Eliminado
+        registerDate:
+          type: string
+          example: "2017-07-21 14:22:01"
+    Error-400:
+      properties:
+        code:
+          type: string
+          example: 400
+        message:
+          type: string
+          example: Bad Request
+    Error-401:
+      properties:
+        code:
+          type: string
+          example: 401
+        message:
+          type: string
+          example: Unauthorized
+    Error-404:
+      properties:
+        detail:
+          type: string
+        message:
+          type: string
+        status:
+          type: integer
+        timestamp:
+          format: date-time
+          type: string
+      type: object
+info:
+  contact: { email: victor.betancourt@derco.cl }
+  description: Payment API.
+  license:
+    { name: Apache 2.0, url: "http://www.apache.org/licenses/LICENSE-2.0.html" }
+  title: Payment API
+  version: 1.0.0
+openapi: 3.0.1
+paths:
+  /customer:
+    post:
+      operationId: CustomerId
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The name of customer
+                email:
+                  type: string
+                  description: The email address of customer
+                externalId:
+                  type: string
+                  description: The dni of customer
+      responses:
+        200:
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/CustomerPayloadResponse" }
+          description: successful operation
+        400:
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error-400" }
+          description: API Error
+        401:
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error-401" }
+          description: Backend Error
+      summary: Create a customer
+      tags:
+        - Customer
+  /customer/{externalId}:
+    get:
+      parameters:
+        - name: externalId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/CustomerPayloadResponse" }
+          description: successful operation
+        404:
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error-404" }
+          description: customer not exists
+      summary: Get a customer
+      tags:
+        - Customer
+  /customer/register:
+    post:
+      operationId: PostCustomerRegisterId
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                customerId:
+                  type: string
+                  description: Customer identification
+                urlReturn:
+                  type: string
+                  description: Callback Url
+        required: true
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CardRegistryResponsePayload"
+          description: successful operation
+        400:
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error-400" }
+          description: API Error
+        401:
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error-401" }
+          description: Backend Error
+      summary: Register a credit card
+      tags:
+        - Customer
+    get:
+      operationId: GetCustomerRegisterId
+      parameters:
+        - description: This token identify the transaction
+          in: query
+          name: token
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CardRegistryInformationPayloadResponse"
+          description: successful operation
+        400:
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error-400" }
+          description: API Error
+        401:
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error-401" }
+          description: Backend Error
+      summary: Get a credit card registry status
+      tags:
+        - Customer
+  /customer/unregister:
+    post:
+      operationId: PostCustomerUnregisterId
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                customerId:
+                  type: string
+                  description: Customer identification
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomerPayloadResponse"
+          description: successful operation
+        400:
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error-400" }
+          description: API Error
+        401:
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error-401" }
+          description: Backend Error
+      summary: Delete a credit card
+      tags:
+        - Customer
+servers:
+  - { url: "http://168.62.184.193/ac/payment" }
+tags:
+  - name: Customer
+    description: Customer's Operations

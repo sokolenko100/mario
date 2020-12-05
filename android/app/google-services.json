@@ -1,0 +1,93 @@
+{
+  "project_info": {
+    "project_number": "712832157591",
+    "firebase_url": "https://auto-conectado-62516.firebaseio.com",
+    "project_id": "auto-conectado-62516",
+    "storage_bucket": "auto-conectado-62516.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:712832157591:android:a5a0c0eb38c9a631",
+        "android_client_info": {
+          "package_name": "com.mariposa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "712832157591-9v0fpepsjauo5cu7v4cbaf8q2et7li4n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByS0MGcUnGJW9XpFCC1nD0kZFid_AY6_8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "712832157591-9v0fpepsjauo5cu7v4cbaf8q2et7li4n.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "712832157591-rd5qi9qanu189oivmd3kdeich6m2542e.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "derco.autoconectado",
+                "app_store_id": "1482285044"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:712832157591:android:f28d7ef8b3d9849e4226d2",
+        "android_client_info": {
+          "package_name": "miautodigital.derco"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "712832157591-bu4vpp1agvid8itqb8f62iu9r1dolpkl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "miautodigital.derco",
+            "certificate_hash": "43724feea185a311a5c03e062b9a0c03ffb7dee9"
+          }
+        },
+        {
+          "client_id": "712832157591-9v0fpepsjauo5cu7v4cbaf8q2et7li4n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByS0MGcUnGJW9XpFCC1nD0kZFid_AY6_8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "712832157591-9v0fpepsjauo5cu7v4cbaf8q2et7li4n.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "712832157591-rd5qi9qanu189oivmd3kdeich6m2542e.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "derco.autoconectado",
+                "app_store_id": "1482285044"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

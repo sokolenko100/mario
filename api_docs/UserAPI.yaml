@@ -1,0 +1,916 @@
+components:
+  schemas:
+    SubscriptionServiceStatusResponse:
+      properties:
+        payload:
+          type: array
+          items:
+            $ref: "#/components/schemas/SubscriptionServiceStatus"
+    SubscriptionServiceStatus:
+      properties:
+        voucherId:
+          type: string
+          description: Voucher Id
+        active:
+          type: boolean
+          description: Service status
+        message:
+          type: string
+          description: Information
+    PasswordRecoveryResetRequest:
+      properties:
+        acpasstoken:
+          type: string
+          description: Time stamped token
+        pass:
+          type: string
+          description: New password
+    PasswordRecoveryRequest:
+      properties:
+        dni:
+          type: string
+          description: User identification code
+        urlReturn:
+          type: string
+          description: The recovery password page
+    SubscriptionResponse:
+      properties:
+        payload:
+          $ref: "#/components/schemas/Subscription"
+    Subscription:
+      properties:
+        enabled:
+          type: boolean
+          description: This indication means that the button can be enabled/disabled to send the activation.
+        activated:
+          type: boolean
+          description: This indication menas that the activation OBU is done and ready to use.
+    404-Error:
+      properties:
+        detail:
+          type: string
+        message:
+          type: string
+        status:
+          default: 404
+          type: integer
+        timestamp:
+          format: date-time
+          type: string
+      type: object
+    Login:
+      properties:
+        dni:
+          type: string
+          example: 12345678-9
+        pass:
+          type: string
+      type: object
+    JwtToken:
+      properties:
+        jwtToken:
+          type: string
+        uuid:
+          type: string
+        tyc:
+          type: boolean
+    LoginResponse:
+      properties:
+        payload:
+          $ref: "#/components/schemas/JwtToken"
+      type: object
+    UserResponse:
+      properties:
+        payload: { $ref: "#/components/schemas/User" }
+      type: object
+    User:
+      properties:
+        address:
+          type: string
+          example: Ahumada 80
+        birthDate:
+          format: date
+          type: string
+        city:
+          type: string
+          example: Santiago
+        clientId:
+          format: int64
+          type: integer
+        dni:
+          type: string
+          example: "12365789"
+        email:
+          type: string
+          format: email
+          example: user@example.com
+        firstName:
+          type: string
+          example: Juan
+        lastName:
+          type: string
+          example: Perez
+        phone:
+          type: string
+          example: "321456879"
+        zipCode:
+          type: string
+          example: "002356547"
+        vouchers:
+          type: array
+          items:
+            $ref: "#/components/schemas/Voucher"
+      type: object
+    UserUpdate:
+      properties:
+        birthDate:
+          format: date
+          type: string
+        firstName:
+          type: string
+          example: Juan
+        lastName:
+          type: string
+          example: Perez
+        phone:
+          type: string
+          example: "321456879"
+        apartment:
+          type: string
+          example: "1007"
+        street:
+          type: string
+          example: "Las Condes"
+        commune:
+          type: string
+          example: "Las Condes"
+        number:
+          type: string
+          example: "345"
+        city:
+          type: string
+          example: "Santiago"
+      type: object
+    UserPassword:
+      properties:
+        pass:
+          example: welcome1
+          type: string
+      required: [pass]
+      type: object
+    Voucher:
+      properties:
+        id:
+          example: 1234567890
+          type: integer
+          description: Identification code from Octo service
+      type: object
+    UserRegistration:
+      properties:
+        dni:
+          type: string
+          format: dni
+          example: 12345654-9
+        pass:
+          example: welcome1
+          type: string
+      type: object
+    CarServiceStatusArrayResponse:
+      properties:
+        payload:
+          type: array
+          items:
+            $ref: "#/components/schemas/CarServiceStatus"
+    CarServiceStatusResponse:
+      properties:
+        payload:
+          $ref: "#/components/schemas/CarServiceStatus"
+          type: object
+    CarServiceStatus:
+      properties:
+        subscriptionId:
+          type: number
+          description: Voucher Id
+        voucherId:
+          type: number
+          description: Subscription Id
+        make:
+          type: string
+          description: Car's make
+        model:
+          type: string
+          description: Car's model
+        colour:
+          type: string
+          description: Car's colour
+        plateNumber:
+          type: string
+          description: Car's plate number identification
+        vin:
+          type: string
+          description: Car's vin identification
+        urlImage:
+          type: string
+          description: Car's image
+        yield:
+          type: number
+          description: Performance km / lt
+        mileage:
+          type: number
+          description: Base mileage
+        fuelType:
+          type: string
+          description: Type of car fuel
+        lastLocation:
+          type: string
+          description: Last location
+        latitude:
+          type: number
+          example: -33.399482
+          description: Latitude
+        longitude:
+          type: number
+          example: -70.570118
+          description: Longitude
+        activated:
+          type: boolean
+          description: Subscription activated flag
+        enabled:
+          type: boolean
+          description: Subscription enabled flag
+        dateSentActivated:
+          type: string
+          format: date-time
+          description: Subscription date when sent to activate
+        dateReadyOcto:
+          type: string
+          format: date-time
+          description: Subscription date when is ready in octo
+    CarData:
+      properties:
+        plateNumber:
+          type: string
+          description: Plate number of the car
+        initKm:
+          type: number
+          description: Initial mileage
+        yield:
+          type: number
+          description: Performance km / lt
+        fuelType:
+          type: string
+          description: Type of car fuel
+    UploadFile:
+      properties:
+        uri:
+          type: string
+        uriAbsolute:
+          type: string
+      type: object
+    UploadFileResponse:
+      properties:
+        payload:
+          $ref: "#/components/schemas/UploadFile"
+      type: object
+info:
+  contact: { email: victor.betancourt@derco.cl }
+  description: User API.
+  license:
+    { name: Apache 2.0, url: "http://www.apache.org/licenses/LICENSE-2.0.html" }
+  title: User API
+  version: 1.0.0
+openapi: 3.0.1
+paths:
+  /login:
+    post:
+      operationId: loginUser
+      requestBody:
+        content:
+          "application/json":
+            schema: { $ref: "#/components/schemas/Login" }
+        description: User's username / password
+        required: true
+      responses:
+        200:
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/LoginResponse" }
+          description: successful operation
+        400:
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/404-Error" }
+          description: Invalid username/password supplied
+      summary: Login user into the system
+      tags:
+        - Login
+
+  /login/help:
+    post:
+      operationId: passwordHelp
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              $ref: "#/components/schemas/PasswordRecoveryRequest"
+        required: true
+      responses:
+        200:
+          content: {}
+          description: successful operation
+        400:
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/404-Error" }
+          description: Bad Request!
+      summary: Password recovery intention
+      tags:
+        - Login
+  /login/help/validate:
+    post:
+      operationId: passwordRecovery
+      parameters:
+        - description: Token recovery
+          in: query
+          name: acpasstoken
+          required: true
+          schema: { type: string }
+      responses:
+        200:
+          content: {}
+          description: successful operation
+        400:
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/404-Error" }
+          description: Bad Request!
+      summary: Validate the password recovery token
+      tags:
+        - Login
+  /login/help/reset:
+    post:
+      operationId: passwordReset
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              $ref: "#/components/schemas/PasswordRecoveryResetRequest"
+        description: User's email and password
+        required: true
+      responses:
+        200:
+          content: {}
+          description: successful operation
+        400:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/404-Error"
+          description: Bad Request!
+      summary: Reset the old password with the new one
+      tags:
+        - Login
+  /activation:
+    post:
+      operationId: userRegistration
+      requestBody:
+        content:
+          "application/json":
+            schema: { $ref: "#/components/schemas/UserRegistration" }
+        description: User's email and password
+        required: true
+      responses:
+        200:
+          content: {}
+          description: successful operation
+        400:
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/404-Error" }
+          description: Bad Request!
+      summary: Set the user's password as the last step registration
+      tags: [User]
+  /{uuid}:
+    get:
+      description: This can only be done by the logged in user.
+      operationId: createUser
+      parameters:
+        - description: UUID of user
+          in: path
+          name: uuid
+          required: true
+          schema: { type: string }
+        - in: header
+          name: x-token-app
+          required: true
+          description: Token delivered when login into the system
+          schema:
+            type: string
+            default: "Bearer token_value"
+      responses:
+        200:
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/UserResponse" }
+          description: successful operation
+        400:
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/404-Error" }
+          description: Invalid ID supplied
+        404:
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/404-Error" }
+          description: Not found
+        405:
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/404-Error" }
+          description: Validation exception
+      summary: Get user info
+      tags: [User]
+    patch:
+      operationId: updateUserData
+      parameters:
+        - description: UUID of user
+          in: path
+          name: uuid
+          required: true
+          schema: { type: string }
+        - in: header
+          name: x-token-app
+          required: true
+          description: Token delivered when login into the system
+          schema:
+            type: string
+            default: "Bearer token_value"
+      requestBody:
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/UserUpdate" }
+        description: User's data
+        required: true
+      responses:
+        200:
+          content: {}
+          description: successful operation
+        400:
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/404-Error" }
+          description: Invalid ID supplied
+        404:
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/404-Error" }
+          description: Not found
+        405:
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/404-Error" }
+          description: Validation exception
+      summary: Update a user data
+      tags: [User]
+  /{uuid}/password:
+    put:
+      operationId: updateUserPass
+      parameters:
+        - description: UUID of user
+          in: path
+          name: uuid
+          required: true
+          schema: { type: string }
+        - in: header
+          name: x-token-app
+          required: true
+          description: Token delivered when login into the system
+          schema:
+            type: string
+            default: "Bearer token_value"
+      requestBody:
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/UserPassword" }
+        description: User's password
+        required: true
+      responses:
+        200:
+          content: {}
+          description: successful operation
+        400:
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/404-Error" }
+          description: Invalid ID supplied
+        404:
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/404-Error" }
+          description: Not found
+        405:
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/404-Error" }
+          description: Validation exception
+      summary: Update a user password
+      tags:
+        - User
+  /{uuid}/subscription/{subscription_id}:
+    get:
+      operationId: get_subscription
+      parameters:
+        - description: UUID of user
+          in: path
+          name: uuid
+          required: true
+          schema: { type: string }
+        - description: Subscription identification number
+          in: path
+          name: subscription_id
+          required: true
+          schema: { type: string }
+        - in: header
+          name: x-token-app
+          required: true
+          description: Token delivered when login into the system
+          schema:
+            type: string
+            default: "Bearer token_value"
+      responses:
+        200:
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SubscriptionResponse" }
+          description: successful operation
+        400:
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/404-Error" }
+          description: Invalid ID supplied
+        404:
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/404-Error" }
+          description: Not found
+        405:
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/404-Error" }
+          description: Validation exception
+      summary: Retrive the subscription status
+      tags:
+        - Subscription
+    post:
+      operationId: post_subscription
+      parameters:
+        - description: UUID of user
+          in: path
+          name: uuid
+          required: true
+          schema: { type: string }
+        - description: Subscription identification number
+          in: path
+          name: subscription_id
+          required: true
+          schema: { type: string }
+        - in: header
+          name: x-token-app
+          required: true
+          description: Token delivered when login into the system
+          schema:
+            type: string
+            default: "Bearer token_value"
+      responses:
+        200:
+          content: {}
+          description: successful operation
+        400:
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/404-Error" }
+          description: Invalid ID supplied
+        404:
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/404-Error" }
+          description: Not found
+        405:
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/404-Error" }
+          description: Validation exception
+      summary: Active the subscription
+      tags:
+        - Subscription
+  /{uuid}/subscription/service:
+    get:
+      operationId: SubscriptionServiceId
+      parameters:
+        - description: UUID of user
+          in: path
+          name: uuid
+          required: true
+          schema: { type: string }
+        - in: header
+          name: x-token-app
+          required: true
+          description: Token delivered when login into the system
+          schema:
+            type: string
+            default: "Bearer token_value"
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                {
+                  $ref: "#/components/schemas/SubscriptionServiceStatusResponse",
+                }
+          description: successful operation
+        404:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/404-Error"
+          description: Not found
+      summary: Get the subscription's service status
+      tags:
+        - Subscription
+  /{uuid}/termsconditions:
+    post:
+      operationId: post_termsconditions
+      parameters:
+        - description: UUID of user
+          in: path
+          name: uuid
+          required: true
+          schema: { type: string }
+        - in: header
+          name: x-token-app
+          required: true
+          description: Token delivered when login into the system
+          schema:
+            type: string
+            default: "Bearer token_value"
+      responses:
+        "200":
+          description: successful operation
+        400:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/404-Error"
+          description: Invalid ID supplied
+        404:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/404-Error"
+          description: Not found
+        405:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/404-Error"
+          description: Validation exception
+      summary: Accept terms and conditions
+      tags:
+        - Terms and Conditions
+  /{uuid}/subcription/cancel/{subscription_id}:
+    post:
+      operationId: PostCancelSubscription
+      parameters:
+        - in: header
+          name: x-token-app
+          required: true
+          description: Token delivered when login into the system
+          schema:
+            type: string
+            default: "Bearer token_value"
+        - in: path
+          description: Uuid's owner Auto Conectado account provided
+          name: uuid
+          required: true
+          schema:
+            type: string
+        - in: path
+          description: Subscription identification number
+          name: subscription_id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: successful operation
+      summary: Cancel the actual subscription
+      tags:
+        - Subscription
+  /cars/{uuid}:
+    get:
+      description: This can get the user's cars info.
+      operationId: carInfo
+      parameters:
+        - description: UUID of user
+          in: path
+          name: uuid
+          required: true
+          schema: { type: string }
+        - in: header
+          name: x-token-app
+          required: true
+          description: Token delivered when login into the system
+          schema:
+            type: string
+            default: "Bearer token_value"
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                { $ref: "#/components/schemas/CarServiceStatusArrayResponse" }
+          description: successful operation
+        400:
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/404-Error" }
+          description: Invalid ID supplied
+        404:
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/404-Error" }
+          description: Not found
+        405:
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/404-Error" }
+          description: Validation exception
+      summary: Get information about the cars of all the subscriptions.
+      tags: [Cars]
+  /cars/{uuid}/subscription/{subscription_id}:
+    get:
+      description: Get the user's car information by subscription id.
+      operationId: carInfoBySubs
+      parameters:
+        - description: UUID of user
+          in: path
+          name: uuid
+          required: true
+          schema: { type: string }
+        - description: ID of user subscription
+          in: path
+          name: subscription_id
+          required: true
+          schema: { type: string }
+        - in: header
+          name: x-token-app
+          required: true
+          description: Token delivered when login into the system
+          schema:
+            type: string
+            default: "Bearer token_value"
+      responses:
+        200:
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/CarServiceStatusResponse" }
+          description: successful operation
+        400:
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/404-Error" }
+          description: Invalid ID supplied
+        404:
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/404-Error" }
+          description: Not found
+        405:
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/404-Error" }
+          description: Validation exception
+      summary: Get car information by subscription id
+      tags: [Cars]
+    patch:
+      description: This can update a vehicle data (plate number / init km).
+      operationId: associatePlateNumberCar
+      parameters:
+        - description: UUID of user
+          in: path
+          name: uuid
+          required: true
+          schema: { type: string }
+        - description: ID of user subscription
+          in: path
+          name: subscription_id
+          required: true
+          schema: { type: string }
+        - in: header
+          name: x-token-app
+          required: true
+          description: Token delivered when login into the system
+          schema:
+            type: string
+            default: "Bearer token_value"
+      requestBody:
+        content:
+          "application/json":
+            schema: { $ref: "#/components/schemas/CarData" }
+        description: User's username / password
+        required: true
+      responses:
+        200:
+          content: {}
+          description: successful operation
+        400:
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/404-Error" }
+          description: Invalid ID supplied
+        404:
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/404-Error" }
+          description: Not found
+        405:
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/404-Error" }
+          description: Validation exception
+      summary: Update a vehicle data
+      tags: [Cars]
+  /cars/uploadfiles/{uuid}/subscription/{subscription_id}:
+    post:
+      parameters:
+        - description: UUID of user
+          in: path
+          name: uuid
+          required: true
+          schema: { type: string }
+        - description: ID of user subscription
+          in: path
+          name: subscription_id
+          required: true
+          schema: { type: string }
+        - in: header
+          name: x-token-app
+          required: true
+          description: Token delivered when login into the system
+          schema:
+            type: string
+            default: "Bearer token_value"
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: File must be *.jpg, *.jpeg, *.png. Max file size is 4096KB
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UploadFileResponse"
+          description: successful operation
+        400:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/404-Error"
+          description: Invalid ID supplied
+        404:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/404-Error"
+          description: Not found
+        405:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/404-Error"
+          description: Validation exception
+      summary: Upload image related to the vehicle.
+      tags:
+        - Files
+servers:
+  - { url: "http://168.62.184.193/ac/users" }
+tags:
+  - name: User
+    description: User's service
+  - name: Login
+    description: User's login
+  - name: Subscription
+    description: User's subscription
+  - name: Terms and Conditions
+    description: User's terms and conditions
+  - name: Cars
+    description: Car's service
+  - name: Files
+    description: Information related to system files

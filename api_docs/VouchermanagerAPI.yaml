@@ -1,0 +1,288 @@
+components:
+  schemas:
+    FaqResponse:
+      properties:
+        payload:
+          type: array
+          items:
+            $ref: "#/components/schemas/Faq"
+      type: object
+    Faq:
+      properties:
+        id:
+          type: integer
+          description: Code
+        category:
+          type: string
+          description: Category related to the question
+        question:
+          type: string
+          description: Content of the question
+        answer:
+          type: string
+          description: Content of the answer
+    LinkingResponse:
+      properties:
+        payload:
+          type: array
+          items:
+            $ref: "#/components/schemas/Linking"
+      type: object
+    Linking:
+      properties:
+        id:
+          type: integer
+          description: Linking identification number
+        user:
+          type: string
+          description: User
+        vin:
+          type: string
+          description: Vehicule’s identification number. This number can come from VIN or plate number
+        imei:
+          type: integer
+          description: IOT’s identification number provided by OCTO
+        startDate:
+          format: date-time
+          type: string
+          description: Register Date
+        endDate:
+          format: date-time
+          type: string
+          description: Processed Date
+        vigency:
+          type: boolean
+          description: Vigency OCTO
+        procesed:
+          type: boolean
+          description: Procesed Register
+        procesedDate:
+          format: date-time
+          type: string
+          description: Procesed date register
+    SaveLinking:
+      properties:
+        user:
+          type: string
+          description: User
+        vin:
+          type: string
+          description: Vehicule’s identification number. This number can come from VIN or plate number
+        imei:
+          type: integer
+          description: IOT’s identification number provided by OCTO
+      type: object
+    CarIssueResponse:
+      properties:
+        payload:
+          $ref: "#/components/schemas/CarIssue"
+      type: object
+    CarIssue:
+      properties:
+        medicalEmergency:
+          example: +56222222222
+          type: string
+        stole:
+          example: +56222222222
+          type: string
+        neumaticsFailure:
+          example: +56222222222
+          type: string
+        batteryFuelFailure:
+          example: +56222222222
+          type: string
+        locksmith:
+          example: +56222222222
+          type: string
+        other:
+          example: +56222222222
+          type: string
+    UploadFile:
+      properties:
+        uri:
+          type: string
+        uriAbsolute:
+          type: string
+      type: object
+    UploadFileResponse:
+      properties:
+        payload:
+          $ref: "#/components/schemas/UploadFile"
+      type: object
+    Error:
+      properties:
+        detail:
+          type: string
+        message:
+          type: string
+        status:
+          type: integer
+        timestamp:
+          format: date-time
+          type: string
+      type: object
+info:
+  contact:
+    email: victor.betancourt@derco.cl
+  description: Voucher Manager API.
+  license:
+    name: Apache 2.0
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+  title: Voucher Manager API
+  version: 1.0.0
+openapi: 3.0.1
+paths:
+  /contacts_support:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CarIssueResponse"
+          description: successful operation
+      summary: >-
+        Retrieve technical information.
+      tags:
+        - Technical Information
+  /uploadfiles/avatar/{uuid}:
+    post:
+      parameters:
+        - description: UUID of user
+          in: path
+          name: uuid
+          required: true
+          schema: { type: string }
+        - in: header
+          name: x-token-app
+          required: true
+          description: Token delivered when login into the system
+          schema:
+            type: string
+            default: "Bearer token_value"
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: File must be *.jpg, *.jpeg, *.png. Max file size is 4096KB
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UploadFileResponse"
+          description: successful operation
+        400:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Invalid ID supplied
+        404:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Not found
+        405:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Validation exception
+      summary: Upload image avatar related to the user.
+      tags:
+        - Files
+  /linking:
+    get:
+      parameters:
+        - name: param
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LinkingResponse"
+          description: successful operation
+        404:
+          description: invalid parameter
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+      summary: >-
+        Get info linking.
+      tags:
+        - Linking
+    post:
+      requestBody:
+        content:
+          "application/json":
+            schema: { $ref: "#/components/schemas/SaveLinking" }
+        description: Links the imei of the onu and the car vin.
+        required: true
+      responses:
+        200:
+          description: successful operation
+        500:
+          description: Error
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+      summary: >-
+        Save imei and vin.
+      tags:
+        - Linking
+  /linking/{linking_id}:
+    delete:
+      parameters:
+        - name: linking_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: successful operation
+        404:
+          description: invalid linking_id
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+      summary: >-
+        Delete data by linking_id.
+      tags:
+        - Linking
+  /faqs:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FaqResponse"
+          description: successful operation
+      summary: >-
+        Retrieve FAQs.
+      tags:
+        - FAQ
+servers:
+  - url: "http://168.62.184.193/ac/vm"
+tags:
+  - description: Information related to system support
+    name: Technical Information
+  - description: Information related to system files
+    name: Files
+  - description: OBU Vinculation with the VIN
+    name: Linking
+  - description: AutoConectado Frequently Asked Question
+    name: FAQ

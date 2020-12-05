@@ -1,0 +1,971 @@
+components:
+  schemas:
+    IncognitoResponse:
+      properties:
+        payload:
+          $ref: "#/components/schemas/Incognito"
+      type: object
+    Incognito:
+      properties:
+        activated:
+          type: boolean
+          example: true
+          description: Incognito mode activated/deactivated
+        startDate:
+          type: string
+          format: date-time
+    TripResponse:
+      properties:
+        payload:
+          type: array
+          items:
+            $ref: "#/components/schemas/Trip"
+      type: object
+    TripsArray:
+      properties:
+        voucherId:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Trip"
+    TripsResponse:
+      properties:
+        payload:
+          type: array
+          items:
+            $ref: "#/components/schemas/TripsArray"
+    Trip:
+      properties:
+        tripId:
+          example: 2
+          type: integer
+        startAddress:
+          example: "Street 34"
+          type: string
+        startCity:
+          example: "Santiago"
+          type: string
+        startZipCode:
+          example: "777777"
+          type: string
+        startCountry:
+          example: "Chile"
+          type: string
+        startStreetNumber:
+          example: "1233"
+          type: string
+        endAddress:
+          example: "Street 89"
+          type: string
+        endCity:
+          example: "Santiago"
+          type: string
+        endZipCode:
+          example: "888888"
+          type: string
+        endCountry:
+          example: "Chile"
+          type: string
+        endStreetNumber:
+          example: "544"
+          type: string
+        fromDate:
+          example: "2019-07-25T00:00:00.0"
+          type: string
+          format: date-time
+        toDate:
+          example: "2019-07-25T23:59:59.0"
+          type: string
+          format: date-time
+        timeZone:
+          example: "TBD"
+          type: string
+        daylightSavingTime:
+          example: "TBD"
+          type: string
+        maxSpeed:
+          example: "80"
+          type: string
+        totalDistance:
+          example: "50"
+          type: string
+        privacy:
+          example: "TBD"
+          type: string
+    TripAllResponsePayload:
+      properties:
+        payload:
+          type: array
+          items:
+            $ref: "#/components/schemas/TripAllResponse"
+      type: object
+    TripAllResponse:
+      properties:
+        tripId:
+          example: 2
+          type: integer
+        startAddress:
+          example: "Street 34"
+          type: string
+        startCity:
+          example: "Santiago"
+          type: string
+        startZipCode:
+          example: "777777"
+          type: string
+        startCountry:
+          example: "Chile"
+          type: string
+        startStreetNumber:
+          example: "1233"
+          type: string
+        endAddress:
+          example: "Street 89"
+          type: string
+        endCity:
+          example: "Santiago"
+          type: string
+        endZipCode:
+          example: "888888"
+          type: string
+        endCountry:
+          example: "Chile"
+          type: string
+        endStreetNumber:
+          example: "544"
+          type: string
+        fromDate:
+          example: "2019-07-25T00:00:00.0"
+          type: string
+          format: date-time
+        toDate:
+          example: "2019-07-25T23:59:59.0"
+          type: string
+          format: date-time
+        timeZone:
+          example: "TBD"
+          type: string
+        daylightSavingTime:
+          example: "TBD"
+          type: string
+        maxSpeed:
+          example: "80"
+          type: string
+        totalDistance:
+          example: "50"
+          type: string
+        privacy:
+          example: "TBD"
+          type: string
+        trips:
+          type: array
+          items:
+            $ref: "#/components/schemas/LocationPoint"
+    Stolen:
+      properties:
+        activate:
+          example: true
+          type: boolean
+          description: Activate / Deactivate stolen mode
+    StolenResponse:
+      properties:
+        status:
+          example: true
+          type: boolean
+          description: Actual status stolen vehicle
+    StolenPayloadResponse:
+      properties:
+        payload:
+          $ref: "#/components/schemas/StolenResponse"
+    LocationPointResponse:
+      properties:
+        payload:
+          type: array
+          items:
+            $ref: "#/components/schemas/LocationPoint"
+      type: object
+    LocationPointSimpleResponse:
+      properties:
+        payload:
+          $ref: "#/components/schemas/LocationPoint"
+      type: object
+    LocationPoint:
+      properties:
+        date:
+          type: string
+          format: date-time
+          example: "2019-07-31T15:42:50.938Z"
+        address:
+          example: Ahumada 80
+          type: string
+          description: The Position associated address (street and house number if the house number can not be extractly separatly)
+        city:
+          example: Santiago
+          type: string
+          description: The Position associated city
+        zipCode:
+          example: 777777
+          type: string
+          description: The Position associated postal code
+        country:
+          example: Chile
+          type: string
+          description: The Position associated country
+        streetNumber:
+          example: 6300
+          type: string
+          description: The Posistion associated street number
+        latitude:
+          example: -33.399482
+          type: number
+          description: The Position latitude.
+        longitude:
+          example: -70.570118
+          type: number
+          description: The Position longitude.
+        speed:
+          example: 80
+          type: number
+          description: The speed associated to the Position.
+        accurancy:
+          example: 3
+          type: number
+          description: "Represent the GPS position quality. Can be: 0,1,2,3 Where 0 is the worst and 3 is the best. 2 and 3 values can be considered reliable."
+        timeZone:
+          example: welcome1
+          type: string
+        daylightSavingTime:
+          example: welcome1
+          type: string
+        heading:
+          example: SW
+          type: string
+          description: The heading associated to the Position in string format
+      required:
+        - password
+      type: object
+    ErrorMessage404:
+      type: object
+      description: if no last position associated to the vehicle is available.
+      properties:
+        code:
+          example: LOCATIONPOINT_ERR_1
+          type: string
+        description:
+          example: Some error message here.
+          type: string
+    ErrorMessage400:
+      type: object
+      description: if the client provides invalid value for input parameters
+      properties:
+        code:
+          example: LOCATIONPOINT_ERR_2
+          type: string
+        description:
+          example: Some error message here.
+          type: string
+    ErrorMessage402:
+      type: object
+      description: if the operation can not be performed due to not enough credits. (Credits management depends on company specification)
+      properties:
+        code:
+          example: LOCATIONPOINT_ERR_3
+          type: string
+        description:
+          example: Some error message here.
+          type: string
+    ErrorMessage424:
+      type: object
+      description: if the operation can not be completed due to periodic usage limit reached.
+      properties:
+        code:
+          example: LOCATIONPOINT_ERR_5
+          type: string
+        description:
+          example: Some error message here.
+          type: string
+    ErrorMessage500:
+      type: object
+      description: if an error occurs on the server (no detailed error needs to be provided to the client. If this error occurs, the client has to provide the x-octo-request-id to any support request)
+      properties:
+        code:
+          example: SERVER_ERR_1
+          type: string
+        description:
+          example: Some error message here.
+          type: string
+info:
+  contact:
+    email: victor.betancourt@derco.cl
+  description: Octo API.
+  license:
+    name: Apache 2.0
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+  title: Octo API
+  version: 1.0.0
+openapi: 3.0.1
+paths:
+  /{uuid}/actual_position/{voucherId}:
+    get:
+      operationId: actualPosition
+      parameters:
+        - in: header
+          name: x-token-app
+          required: true
+          description: Token delivered when login into the system
+          schema:
+            type: string
+            default: "Bearer token_value"
+        - in: path
+          description: The voucher id for which the trip events must be provided
+          name: voucherId
+          required: true
+          schema:
+            type: string
+        - in: path
+          description: Uuid's owner Auto Conectado account provided
+          name: uuid
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LocationPointSimpleResponse"
+          description: successful operation
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage404"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage400"
+        "402":
+          description: Payment Required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage402"
+        "424":
+          description: Failed Dependency
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage424"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage500"
+      summary: Get all the displayable information for the last vehicle position.
+      tags:
+        - Locations
+  /{uuid}/stolen/{voucherId}:
+    get:
+      operationId: StolenStatus
+      parameters:
+        - in: header
+          name: x-token-app
+          required: true
+          description: Token delivered when login into the system
+          schema:
+            type: string
+            default: "Bearer token_value"
+        - in: path
+          description: The voucher id for which the trip events must be provided
+          name: voucherId
+          required: true
+          schema:
+            type: string
+        - in: path
+          description: Uuid's owner Auto Conectado account provided
+          name: uuid
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StolenPayloadResponse"
+          description: successful operation
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage404"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage400"
+        "402":
+          description: Payment Required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage402"
+        "424":
+          description: Failed Dependency
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage424"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage500"
+      summary: Get the actual stolen status vehicle.
+      tags:
+        - Stolen
+    post:
+      operationId: antithieft
+      parameters:
+        - in: header
+          name: x-token-app
+          required: true
+          description: Token delivered when login into the system
+          schema:
+            type: string
+            default: "Bearer token_value"
+        - in: path
+          description: The voucher id for which the trip events must be provided
+          name: voucherId
+          required: true
+          schema:
+            type: string
+        - in: path
+          description: Uuid's owner Auto Conectado account provided
+          name: uuid
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          "application/json":
+            schema: { $ref: "#/components/schemas/Stolen" }
+        required: true
+      responses:
+        "200":
+          description: successful operation
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage404"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage400"
+        "402":
+          description: Payment Required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage402"
+        "424":
+          description: Failed Dependency
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage424"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage500"
+      summary: Notify stolen vehicle.
+      tags:
+        - Stolen
+  /{uuid}/trips:
+    get:
+      parameters:
+        - in: header
+          name: x-token-app
+          required: true
+          description: Token delivered when login into the system
+          schema:
+            type: string
+            default: "Bearer token_value"
+        - in: path
+          description: Uuid's owner Auto Conectado account provided
+          name: uuid
+          required: true
+          schema:
+            type: string
+        - in: path
+          description: The voucher id for which the trip events must be provided
+          name: voucherId
+          required: true
+          schema:
+            type: string
+        - in: query
+          description: The start date for the trips search. Expressed in UTC/GMT format
+          name: startDate
+          required: false
+          schema:
+            type: string
+            format: date-time
+            example: "2019-07-31T15:42:50.938Z"
+        - in: query
+          description: The end date for the trips search. Expressed in UTC/GMT format
+          name: endDate
+          required: false
+          schema:
+            type: string
+            format: date-time
+            example: "2019-07-31T15:42:50.938Z"
+        - in: query
+          description: Can be use to request also the address. Can assume true or false, default is false
+          name: address
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - in: query
+          description: Added as a request parameter
+          name: pageSize
+          required: false
+          schema:
+            type: integer
+        - in: query
+          description: Added as a request parameter
+          name: pageNumber
+          required: false
+          schema:
+            type: integer
+        - in: query
+          description: Added as a request parameter
+          name: sortOrder
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TripsResponse"
+          description: successful operation
+      summary: Get all the User's trips
+      tags:
+        - Trips
+  /{uuid}/trips/{voucherId}:
+    get:
+      operationId: trips
+      parameters:
+        - in: header
+          name: x-token-app
+          required: true
+          description: Token delivered when login into the system
+          schema:
+            type: string
+            default: "Bearer token_value"
+        - in: path
+          description: Uuid's owner Auto Conectado account provided
+          name: uuid
+          required: true
+          schema:
+            type: string
+        - in: path
+          description: The voucher id for which the trip events must be provided
+          name: voucherId
+          required: true
+          schema:
+            type: string
+        - in: query
+          description: The start date for the trips search. Expressed in UTC/GMT format
+          name: startDate
+          required: false
+          schema:
+            type: string
+            format: date-time
+            example: "2019-07-31T15:42:50.938Z"
+        - in: query
+          description: The end date for the trips search. Expressed in UTC/GMT format
+          name: endDate
+          required: false
+          schema:
+            type: string
+            format: date-time
+            example: "2019-07-31T15:42:50.938Z"
+        - in: query
+          description: Can be use to request also the address. Can assume true or false, default is false
+          name: address
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - in: query
+          description: Added as a request parameter
+          name: pageSize
+          required: false
+          schema:
+            type: integer
+        - in: query
+          description: Added as a request parameter
+          name: pageNumber
+          required: false
+          schema:
+            type: integer
+        - in: query
+          description: Added as a request parameter
+          name: sortOrder
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TripResponse"
+          description: successful operation
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage404"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage400"
+        "402":
+          description: Payment Required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage402"
+        "424":
+          description: Failed Dependency
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage424"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage500"
+      summary: Get a trip information
+      tags:
+        - Trips
+  /{uuid}/trips/{voucherId}/detail/{tripId}:
+    get:
+      operationId: trips_detail
+      parameters:
+        - in: header
+          name: x-token-app
+          required: true
+          description: Token delivered when login into the system
+          schema:
+            type: string
+            default: "Bearer token_value"
+        - in: path
+          description: Uuid's owner Auto Conectado account provided
+          name: uuid
+          required: true
+          schema:
+            type: string
+        - in: path
+          description: The voucher id for which the trip events must be provided
+          name: voucherId
+          required: true
+          schema:
+            type: string
+        - in: path
+          description: Trip Id
+          name: tripId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LocationPointResponse"
+          description: successful operation
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage404"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage400"
+        "402":
+          description: Payment Required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage402"
+        "424":
+          description: Failed Dependency
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage424"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage500"
+      summary: Get a trip's detail
+      tags:
+        - Trips
+    delete:
+      parameters:
+        - in: header
+          name: x-token-app
+          required: true
+          description: Token delivered when login into the system
+          schema:
+            type: string
+            default: "Bearer token_value"
+        - in: path
+          description: Uuid's owner Auto Conectado account provided
+          name: uuid
+          required: true
+          schema:
+            type: string
+        - in: path
+          description: The voucher id for which the trip events must be provided
+          name: voucherId
+          required: true
+          schema:
+            type: string
+        - in: path
+          description: Trip Id
+          name: tripId
+          required: true
+          schema:
+            type: string
+        - in: query
+          description: Start date
+          name: startDate
+          required: true
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          description: End date
+          name: endDate
+          required: true
+          schema:
+            type: string
+            format: date-time
+      responses:
+        "200":
+          description: successful operation
+      summary: Delete a selected trip
+      tags:
+        - Trips
+  /{uuid}/trips/{voucherId}/all:
+    get:
+      operationId: trips_detail_all
+      parameters:
+        - in: header
+          name: x-token-app
+          required: true
+          description: Token delivered when login into the system
+          schema:
+            type: string
+            default: "Bearer token_value"
+        - in: path
+          description: Uuid's owner Auto Conectado account provided
+          name: uuid
+          required: true
+          schema:
+            type: string
+        - in: path
+          description: The voucher id for which the trip events must be provided
+          name: voucherId
+          required: true
+          schema:
+            type: string
+        - in: path
+          description: Trip Id
+          name: tripId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TripAllResponsePayload"
+          description: successful operation
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage404"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage400"
+        "402":
+          description: Payment Required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage402"
+        "424":
+          description: Failed Dependency
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage424"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage500"
+      summary: Get all trip's with by voucher id and details
+      tags:
+        - Trips
+  /{uuid}/incognito/{voucherId}/start:
+    post:
+      parameters:
+        - in: header
+          name: x-token-app
+          required: true
+          description: Token delivered when login into the system
+          schema:
+            type: string
+            default: "Bearer token_value"
+        - in: path
+          description: Uuid's owner Auto Conectado account provided
+          name: uuid
+          required: true
+          schema:
+            type: string
+        - in: path
+          description: The voucher id for which the trip events must be provided
+          name: voucherId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: successful operation
+      summary: Start incognito mode
+      tags:
+        - Incognito
+  /{uuid}/incognito/{voucherId}/stop:
+    post:
+      parameters:
+        - in: header
+          name: x-token-app
+          required: true
+          description: Token delivered when login into the system
+          schema:
+            type: string
+            default: "Bearer token_value"
+        - in: path
+          description: Uuid's owner Auto Conectado account provided
+          name: uuid
+          required: true
+          schema:
+            type: string
+        - in: path
+          description: The voucher id for which the trip events must be provided
+          name: voucherId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: successful operation
+      summary: Stop incognito mode
+      tags:
+        - Incognito
+  /{uuid}/incognito/{voucherId}/status:
+    get:
+      operationId: IncognitoStatus
+      parameters:
+        - in: header
+          name: x-token-app
+          required: true
+          description: Token delivered when login into the system
+          schema:
+            type: string
+            default: "Bearer token_value"
+        - in: path
+          description: Uuid's owner Auto Conectado account provided
+          name: uuid
+          required: true
+          schema:
+            type: string
+        - in: path
+          description: The voucher id for which the trip events must be provided
+          name: voucherId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IncognitoResponse"
+          description: successful operation
+      summary: Get actual incognito status (activated/deactivated)
+      tags:
+        - Incognito
+servers:
+  - url: "http://168.62.184.193/ac/octo"
+tags:
+  - description: Vehicle Location Points
+    name: Locations
+  - description: Stolen vehicles
+    name: Stolen
+  - description: Vehicle Trips
+    name: Trips
+  - description: Vehicle incognito mode
+    name: Incognito
